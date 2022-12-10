@@ -17,3 +17,6 @@ class IDSReport:
             report += obj['time'] + '\t' + obj['type'] + '\t' + '/'.join(obj['layers']) + '\t' + obj['src_ip'] + '\t' + obj['dst_ip'] + '\t' + obj['description'] + '\n\n'
 
         return report
+    
+    def stats(self):
+        return len(self._records)

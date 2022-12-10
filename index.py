@@ -3,6 +3,8 @@ warnings.simplefilter("ignore", category=DeprecationWarning)
 import scapy.config
 from scapy.all import ICMP, UDP, TCP, IP, sniff
 import time
+from yaspin import yaspin
+import os
 
 from banner import print_banner
 
@@ -20,6 +22,14 @@ from yaml.loader import SafeLoader
 import atexit
 
 registered_handlers = []
+registered_timers: list = []
+
+class TimedText:
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return f"Tracking {report.stats()} records"
 
 def malicious_comms(pkt):
     # check if the packet has a TCP layer
@@ -29,8 +39,17 @@ def malicious_comms(pkt):
 
         # check if the TCP header is valid
         if not tcp_hdr.flags & 2:
-            # the TCP header is invalid, print a message
-            report.add_record(IDSRecord(pkt, "Suspicious Packet", pkt[IP].src, pkt[IP].dst, "A packet with an invalid TCP header detected. Potential stealth scan attempt by {}".format(pkt[IP].src)))
+            # the TCP header is invalid, add to the report
+            report.add_record(
+                IDSRecord(
+                    pkt,
+                    "Suspicious Packet",
+                    pkt[IP].src,
+                    pkt[IP].dst,
+                    "A packet with an invalid TCP header detected. Potential stealth scan attempt by {}"
+                    .format(pkt[IP].src)
+                )
+            )
         
 def sniffer(packet):
     malicious_comms(packet)
@@ -93,37 +112,44 @@ with open('conf.yml') as f:
         if 'UDP' in conf['traffic']:
             udp = FloodDetection(report, UDP, conf['traffic']['UDP'].get('max_count', 0))
             registered_handlers.append(udp.handler)
-            udp.start(conf['traffic']['UDP'].get('interval', 1000) / 1000)
+            t = udp.start(conf['traffic']['UDP'].get('interval', 1000) / 1000)
+            registered_timers.append(t)
         
         if 'TCP' in conf['traffic']:
             tcp = FloodDetection(report, TCP, conf['traffic']['TCP'].get('max_count', 0))
             registered_handlers.append(tcp.handler)
-            tcp.start(conf['traffic']['ICMP'].get('interval', 1000) / 1000)
+            t = tcp.start(conf['traffic']['ICMP'].get('interval', 1000) / 1000)
+            registered_timers.append(t)
         
         if 'ICMP' in conf['traffic']:
             icmp = FloodDetection(report, ICMP, conf['traffic']['ICMP'].get('max_count', 0))
             registered_handlers.append(icmp.handler)
-            icmp.start(conf['traffic']['ICMP'].get('interval', 1000) / 1000)
+            t = icmp.start(conf['traffic']['ICMP'].get('interval', 1000) / 1000)
+            registered_timers.append(t)
         
         if 'HTTP' in conf['traffic']:
             http = FloodDetection(report, TCP, conf['traffic']['HTTP'].get('max_count', 0))
             registered_handlers.append(http.handler)
-            http.start(conf['traffic']['HTTP'].get('interval', 1000) / 1000)
+            t = http.start(conf['traffic']['HTTP'].get('interval', 1000) / 1000)
+            registered_timers.append(t)
         
         if 'SYN' in conf['traffic']:
             syn = SYNFloodDetection(report, TCP, conf['traffic']['SYN'].get('max_count', 0))
             registered_handlers.append(syn.handler)
-            syn.start(conf['traffic']['SYN'].get('interval', 1000) / 1000)
+            t = syn.start(conf['traffic']['SYN'].get('interval', 1000) / 1000)
+            registered_timers.append(t)
         
         if 'ACK' in conf['traffic']:
             ack = ACKFloodDetection(report, TCP, conf['traffic']['ACK'].get('max_count', 0))
             registered_handlers.append(ack.handler)
-            ack.start(conf['traffic']['ACK'].get('interval', 1000) / 1000)
+            t = ack.start(conf['traffic']['ACK'].get('interval', 1000) / 1000)
+            registered_timers.append(t)
         
         if 'FIN' in conf['traffic']:
             fin = FINFloodDetection(report, TCP, conf['traffic']['FIN'].get('max_count', 0))
             registered_handlers.append(fin.handler)
-            fin.start(conf['traffic']['FIN'].get('interval', 1000) / 1000)
+            t = fin.start(conf['traffic']['FIN'].get('interval', 1000) / 1000)
+            registered_timers.append(t)
 
     if 'restricted_resources' in conf:
         restricted_resources = RestrictedResources(
@@ -141,9 +167,14 @@ with open('conf.yml') as f:
 
         dt = DataTransfer(report, size)
         registered_handlers.append(dt.handler)
-        dt.start(conf['data_transfer']['interval'] / 1000)
+        t = dt.start(conf['data_transfer']['interval'] / 1000)
+        registered_timers.append(t)
     
     print_banner()
-    sniff(iface=conf.get('interface', 'wlo1'), prn=sniffer)
+    with yaspin(text=TimedText()):
+        sniff(iface=conf.get('interface', 'wlo1'), prn=sniffer)
+    print("DONE")
+    for t in registered_timers:
+        t.cancel()
 
-
+    os._exit(0)
