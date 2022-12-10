@@ -11,6 +11,7 @@ class FloodDetection:
     _max_count = 0
     _registry = {}
     _report: IDSReport
+    _timer = None
 
     def __init__(self, report: IDSReport, packet_type, max_packet_count: int, max_packet_len: int = 0):
         self._packet_type = packet_type
@@ -20,23 +21,24 @@ class FloodDetection:
 
     def set_interval(self, func, sec, args):
         def func_wrapper():
-            self.set_interval(func, sec, args)
+            self._timer.cancel()
+            self._timer = self.set_interval(func, sec, args)
             func(args[0])
-        t = threading.Timer(sec, func_wrapper)
-        t.start()
-        return t
+        self._timer = threading.Timer(sec, func_wrapper)
+        self._timer.start()
+        return self._timer
 
     def start(self, interval: int = 1):
         def clean(r):
             for k in r.keys():
                 r[k] = 0
 
-        self.set_interval(clean, interval, [self._registry])
+        return self.set_interval(clean, interval, [self._registry])
 
     def _is_flood(self, packet):
         if not IP in packet:
             return
-        # Check if the packet is a UDP or ICMP packet
+        # Check if the packet is the type we are looking for
         if self._packet_type in packet:
             # Check if the packet has a high number of repetitions
             if packet[IP].dst not in self._registry.keys():

@@ -22,6 +22,7 @@ class DataTransfer:
     _limit: int = 0
     _report: IDSReport = None
     _registry = {}
+    _timer = None
 
     def __init__(self, report: IDSReport, limit) -> None:
         number = limit[:-2]
@@ -32,19 +33,19 @@ class DataTransfer:
 
     def set_interval(self, func, sec, args):
         def func_wrapper():
-            self.set_interval(func, sec, args)
+            self._timer.cancel()
+            self._timer = self.set_interval(func, sec, args)
             func(args[0])
-        t = threading.Timer(sec, func_wrapper)
-        t.start()
-        return t
+        self._timer = threading.Timer(sec, func_wrapper)
+        self._timer.start()
+        return self._timer
 
     def start(self, interval: int = 1):
         def clean(r):
-            print(r)
             for k in r.keys():
                 r[k] = 0
 
-        self.set_interval(clean, interval, [self._registry])
+        return self.set_interval(clean, interval, [self._registry])
 
     def handler(self, packet):
         if IP not in packet:

@@ -1,4 +1,6 @@
-- *Mukhtar Suleiman* Design & Implementation
-- *Mainasara Tsowa* Development
+- *Mukhtar Suleiman* Development/Design & Implementation
+- *Mainasara Tsowa* Development/Design & Implementation
 - *Sylvester Ushie* Documentation
 - *Birma Markus Yakubu* Documentation
+- *Salihu Ahmed Rufai* Testing
+- *Abdulhafeez Abdulfatai Olaitan* Testing
