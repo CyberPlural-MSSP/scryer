@@ -36,7 +36,7 @@
   <h3 align="center">Scryer IDS</h3>
 
   <p align="center">
-    An awesome configurable IDS made by <a href="#contact">us</a>
+    An awesome configurable IDS made by <a href="#contacts">us</a>
     <br />
     <a href="https://docs.google.com/document/d/1wF2qryPLDN5uwAlxvbAIxNTm62B8KeLeW5EXssNi-fE/edit?usp=sharing"><strong>Read Documentation</strong></a>
     <br />
@@ -226,7 +226,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 
 <!-- CONTACT -->
-## Contact Us
+## Contacts
 
 - Muktar Suleiman - [@Abtwithmoha](https://twitter.com/Abtwithmoha) - muktarsuleiman62@gmail.com 
 - Mainasara Tsowa - [@neutrino2211](https://twitter.com/neutrino221) - tsowamainasara@gmail.com - neutrino221.github.io
