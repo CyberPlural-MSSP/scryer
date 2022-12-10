@@ -123,44 +123,44 @@ To get started, you need to install python3, from [here](Python.url)
     ```
 3. Review and edit `conf.yml` to describe your instance's parameters
    ```yml
-   scryer:
-    interface: wlo1
-    traffic:
-        UDP:
-            max_count: 150
-            max_len: 0 # Don't check for packet lengths
-            scan_interval: 1000 # scan interval in milliseconds
-        TCP:
-            max_count: 10000
-            max_len: 0 # Don't check
-            scan_interval: 1000
-        ICMP:
-            max_count: 100
-            max_len: 0
-            scan_interval: 1000
-        HTTP:
-            max_count: 200_000
-            max_len: 0
-            scan_interval: 1000
-        SYN:
-            max_count: 100
-            max_len: 0
-            scan_interval: 1000
-        ACK:
-            max_count: 100
-            max_len: 0
-            scan_interval: 1000
-        FIN:
-            max_count: 100
+    scryer:
+        interface: wlo1
+        traffic:
+            UDP:
+                max_count: 150
+                max_len: 0 # Don't check for packet lengths
+                scan_interval: 1000 # scan interval in milliseconds
+            TCP:
+                max_count: 10000
+                max_len: 0 # Don't check
+                scan_interval: 1000
+            ICMP:
+                max_count: 100
+                max_len: 0
+                scan_interval: 1000
+            HTTP:
+                max_count: 200_000
+                max_len: 0
+                scan_interval: 1000
+            SYN:
+                max_count: 100
+                max_len: 0
+                scan_interval: 1000
+            ACK:
+                max_count: 100
+                max_len: 0
+                scan_interval: 1000
+            FIN:
+                max_count: 100
 
-    data_transfer:
-        limit: 1MB # Computers only allowed to transfer 1MB of data a second
-        interval: 1000
+        data_transfer:
+            limit: 1MB # Computers only allowed to transfer 1MB of data a second
+            interval: 1000
 
-    network_resources:
-        network: 192.168.*.* # Define the bounds of your network
-        internal: 192.168.3.* # Define protected resources that even internal computers can't access
-        external: !192.168.4.2 # Define protected resources that external computers can't access
+        network_resources:
+            network: 192.168.*.* # Define the bounds of your network
+            internal: 192.168.3.* # Define protected resources that even internal computers can't access
+            external: !192.168.4.2 # Define protected resources that external computers can't access
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
