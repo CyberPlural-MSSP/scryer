@@ -50,12 +50,6 @@ def malicious_comms(pkt):
                     .format(pkt[IP].src)
                 )
             )
-        
-def sniffer(packet):
-    malicious_comms(packet)
-    
-    for handler in registered_handlers:
-        handler(packet)
 
 
 # TODO: Persistent threats
@@ -92,9 +86,6 @@ def exit_handler():
 
     with open("ids-report" + str(int(time.time())), 'w') as f:
         f.write(report_txt)
-        
-
-atexit.register(exit_handler)
 
 ip_list = parse_iplist("ipsum.txt")
 interfaces = get_interfaces()
@@ -107,6 +98,13 @@ with open('conf.yml') as f:
     data = yaml.load(f, Loader=SafeLoader)
 
     conf = data['scryer']
+
+    def sniffer(packet):
+        if 'malicious' in conf['traffic'] and conf['traffic']['malicious']:
+            malicious_comms(packet)
+        
+        for handler in registered_handlers:
+            handler(packet)
 
     if 'traffic' in conf:
         if 'UDP' in conf['traffic']:
@@ -177,4 +175,5 @@ with open('conf.yml') as f:
     for t in registered_timers:
         t.cancel()
 
+    exit_handler()
     os._exit(0)
