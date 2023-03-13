@@ -1,12 +1,13 @@
 scryer:
   interface: wlo1
   traffic:
+    malicious: false
     UDP:
-      max_count: 150
+      max_count: 100
       max_len: 0 # Don't check
       scan_interval: 1000 # scan interval in milliseconds
     TCP:
-      max_count: 10000
+      max_count: 100
       max_len: 0 # Don't check
       scan_interval: 1000
     ICMP:
@@ -14,7 +15,7 @@ scryer:
       max_len: 0
       scan_interval: 1000
     HTTP:
-      max_count: 200_000
+      max_count: 5
       max_len: 0
       scan_interval: 1000
     SYN:
