@@ -6,7 +6,7 @@ import time
 from yaspin import yaspin
 import os
 
-from banner import print_banner
+from banner import print_banner, is_windows
 
 from record import IDSRecord
 from report import IDSReport
@@ -19,17 +19,24 @@ from data_transfer import DataTransfer
 import yaml
 from yaml.loader import SafeLoader
 
+from threading import Thread
+
 import atexit
 
 registered_handlers = []
 registered_timers: list = []
 
+is_windows_loader = True
 class TimedText:
     def __init__(self):
         pass
 
     def __str__(self):
         return f"Tracking {report.stats()} records"
+    
+def windows_loader():
+    while is_windows_loader:
+        print(TimedText(), end='\r')
 
 def malicious_comms(pkt):
     # check if the packet has a TCP layer
@@ -169,8 +176,14 @@ with open('conf.yml') as f:
         registered_timers.append(t)
     
     print_banner()
-    with yaspin(text=TimedText()):
+    if not is_windows:
+        with yaspin(text=TimedText()):
+            sniff(iface=conf.get('interface', 'wlo1'), prn=sniffer)
+    else:
+        t = Thread(target=windows_loader)
+        t.start()
         sniff(iface=conf.get('interface', 'wlo1'), prn=sniffer)
+        is_windows_loader = False
     print("DONE")
     for t in registered_timers:
         t.cancel()
