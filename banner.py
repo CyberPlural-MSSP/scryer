@@ -1,5 +1,8 @@
+import os
+
 END = '\001\033[0m\002'
 
+is_windows = os.name == 'nt'
 
 def print_banner():
 	print('\r')
@@ -60,7 +63,7 @@ def print_banner():
 	for charset in range(0, 6):
 		for pos in range(0, len(banner)):
 			for i in range(0, len(banner[pos][charset])):
-				clr = f'\033[38;5;{txt_color}m'
+				clr = f'\033[38;5;{txt_color}m' if not is_windows else ''
 				char = f'{clr}{banner[pos][charset][i]}'
 				final.append(char)
 				cl += 1
