@@ -178,11 +178,11 @@ with open('conf.yml') as f:
     print_banner()
     if not is_windows:
         with yaspin(text=TimedText()):
-            sniff(iface=conf.get('interface', 'wlo1'), prn=sniffer)
+            sniff(iface=conf.get('interface', conf['interface']), prn=sniffer)
     else:
         t = Thread(target=windows_loader)
         t.start()
-        sniff(iface=conf.get('interface', 'wlo1'), prn=sniffer)
+        sniff(iface=conf.get('interface', conf['interface']), prn=sniffer)
         is_windows_loader = False
     print("DONE")
     for t in registered_timers:
