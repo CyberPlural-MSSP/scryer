@@ -84,11 +84,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://github.com/muhky/scryer)
 
-Scryer is a network-based intrusion detection system (IDS) designed to protect your network from external threats. Using advanced algorithms and machine learning techniques, Scryer is able to continuously monitor your network traffic and detect potential security breaches in real-time. With Scryer, you can stay one step ahead of attackers and ensure that your network remains secure and protected.
-
-Scryer is easy to use and requires no specialized knowledge or expertise. Simply install Scryer on your network, and let it do the work for you. Scryer is continuously updated with the latest security signatures and algorithms, so you can trust that your network is always protected. Try Scryer today, and take the first step towards securing your network.
-
-Scryer uses advanced algorithms to detect suspicious traffic on your network. By continuously monitoring network traffic and analyzing it for unusual patterns or anomalies, Scryer is able to identify potential security breaches and alert you in real-time. With Scryer, you can stay one step ahead of attackers and protect your network from potential threats.
+Scryer is a network-based intrusion detection system (IDS) designed to protect your network from external threats. Using advanced algorithms, Scryer is able to continuously monitor your network traffic and detect potential security breaches in real-time. With Scryer, you can stay one step ahead of attackers and ensure that your network remains secure and protected.
 
 Scryer also includes features to detect and prevent unauthorised users from accessing your network. By continuously monitoring user activity, Scryer is able to identify suspicious login attempts and block them before they can gain access to your network. In addition, Scryer can be configured to require two-factor authentication for all users, adding an extra layer of security to protect your network from unauthorised access. With Scryer, you can be confident that only authorised users have access to your network.
 
