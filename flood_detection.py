@@ -2,7 +2,6 @@ import threading
 from scapy.all import IP, TCP
 from report import IDSReport
 from record import IDSRecord
-import time
 
 class FloodDetection:
 
