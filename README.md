@@ -153,7 +153,7 @@ To get started, you need to install python3, from [here](Python.url)
             limit: 1MB # Computers only allowed to transfer 1MB of data a second
             interval: 1000
 
-        network_resources:
+        restricted_resources: # WIP
             network: 192.168.*.* # Define the bounds of your network
             internal: 192.168.3.* # Define protected resources that even internal computers can't access
             external: !192.168.4.2 # Define protected resources that external computers can't access
@@ -181,8 +181,8 @@ sudo python3 index.py
 - [x] Detect unusual data transfer
 - [x] Detect suspicious packets
 - [x] Detect access to restricted resources
-- [X] Detect spike in network traffic
-- [X] Basic example config file
+- [x] Detect spike in network traffic
+- [x] Basic example config file
 - [ ] Isolation of suspicious IP addresses from the network 
 - [ ] Booting out suspicious ip out of the network.
 - [ ] Implementation of the IDS on the event manager making it easy for admins to carryout possible investigation

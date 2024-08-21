@@ -32,3 +32,8 @@ scryer:
   data_transfer:
     limit: 1MB
     interval: 1000
+
+  restricted_resources: # WIP
+    network: 192.168.*.* # Define the bounds of your network
+    internal: 192.168.0.167 # Define protected resources that even internal computers can't access
+    external: "!192.168.4.2" # Define protected resources that external computers can't access
