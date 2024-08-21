@@ -106,13 +106,13 @@ def get_with_progressbar(url: str, file_path: str):
     total_size = int(response.headers.get("content-length", 0))
     block_size = 1024
 
-    with tqdm(total=total_size, unit="B", unit_scale=True) as progress_bar:
+    with tqdm(total=(total_size/32) * 100, unit="B", unit_scale=True) as progress_bar:
         with open(file_path, "wb") as file:
             for data in response.iter_content(block_size):
                 progress_bar.update(len(data))
                 file.write(data)
 
-    if total_size != 0 and progress_bar.n != total_size:
+    if total_size == 0:
         raise RuntimeError("Could not download file")
 
 def main():
@@ -135,7 +135,7 @@ def main():
     mal_comms = MaliciousComms(report, ip_list)
     registered_handlers.append(mal_comms.handler)
 
-    if args.show_ifaces:
+    if args.update_ipsum:
         get_with_progressbar("https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt", "ipsum.txt")
 
     # Open the file and load the file
