@@ -156,7 +156,7 @@ To get started, you need to install python3, from [here](Python.url)
         restricted_resources: # WIP
             network: 192.168.*.* # Define the bounds of your network
             internal: 192.168.3.* # Define protected resources that even internal computers can't access
-            external: !192.168.4.2 # Define protected resources that external computers can't access
+            external: "!192.168.4.2" # Define protected resources that external computers can't access
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
