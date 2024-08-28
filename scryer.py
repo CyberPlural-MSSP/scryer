@@ -15,7 +15,7 @@ from report import IDSReport
 
 from flood_detection import FloodDetection, SYNFloodDetection, ACKFloodDetection, FINFloodDetection, HTTPFloodDetection
 from malicious_communication import MaliciousComms
-from restricted_resources import RestrictedResources
+from restricted_resources import Resources
 from data_transfer import DataTransfer
 
 import yaml
@@ -121,9 +121,9 @@ def main():
         description="A bespoke network-based IDS solution for use within the Cyberplural MSSP"
     )
 
-    parser.add_argument("--conf", default="conf.yml", help="Path to the session configuration file")
-    parser.add_argument("--update-ipsum", type=bool, action=argparse.BooleanOptionalAction, default=False, help="Update list of known bad ips before running")
-    parser.add_argument("--show-ifaces", type=bool, action=argparse.BooleanOptionalAction, default=False, help="Show available network interfaces")
+    parser.add_argument("-c", "--conf", default="conf.yml", help="Path to the session configuration file")
+    parser.add_argument("-u", "--update-ipsum", type=bool, action=argparse.BooleanOptionalAction, default=False, help="Update list of known bad ips before running")
+    parser.add_argument("-i", "--show-ifaces", type=bool, action=argparse.BooleanOptionalAction, default=False, help="Show available network interfaces")
 
     args = parser.parse_args()
 
@@ -194,15 +194,12 @@ def main():
                 t = fin.start(conf['traffic']['FIN'].get('interval', 1000) / 1000)
                 registered_timers.append(t)
 
-        if 'restricted_resources' in conf:
-            restricted_resources = RestrictedResources(
+        if 'resources' in conf:
+            resources = Resources(
                 report,
-                conf['restricted_resources']['network'],
-                conf['restricted_resources']['internal'],
-                conf['restricted_resources'].get("external", ""),
-                conf['restricted_resources'].get('internal_allow_list', "")
+                conf['resources']
             )
-            registered_handlers.append(restricted_resources.handler)
+            registered_handlers.append(resources.handler)
 
         if 'data_transfer' in conf:
             size = conf['data_transfer']['limit']
