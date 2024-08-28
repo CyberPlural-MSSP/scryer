@@ -2,41 +2,12 @@ scryer:
   interface: en0
   traffic:
     malicious: false
-    UDP:
-      max_count: 100
-      max_len: 0 # Don't check
-      scan_interval: 1000 # scan interval in milliseconds
-    TCP:
-      max_count: 10_000
-      max_len: 0 # Don't check
-      scan_interval: 1000
-    ICMP:
-      max_count: 100
-      max_len: 0
-      scan_interval: 1000
-    HTTP:
-      max_count: 100
-      max_len: 0
-      scan_interval: 1000
-    SYN:
-      max_count: 100
-      max_len: 0
-      scan_interval: 1000
-    ACK:
-      max_count: 100
-      max_len: 0
-      scan_interval: 1000
-    FIN:
-      max_count: 100
 
   data_transfer:
-    limit: 1MB
+    limit: 100KB
     interval: 1000
 
   resources: # WIP
-    "192.168.0.*":
-      allow:
-        - HTTP
-        - DNS
+    "192.168.*.*":
       disallow:
-        - UDP
+        - NBT Datagram Packet

@@ -111,6 +111,8 @@ def get_with_progressbar(url: str, file_path: str):
             for data in response.iter_content(block_size):
                 progress_bar.update(len(data))
                 file.write(data)
+        
+        progress_bar.update((total_size/32) * 100)
 
     if total_size == 0:
         raise RuntimeError("Could not download file")

@@ -31,8 +31,8 @@ class Resources:
 
         layers = [l for l in self._get_packet_layers(packet)]
 
-        allowed = resource['allow']
-        disallowed = resource['disallow']
+        allowed = resource['allow'] if 'allow' in resource else []
+        disallowed = resource['disallow'] if 'disallow' in resource else []
 
         for l in layers:
             # print(allowed, disallowed, l)
