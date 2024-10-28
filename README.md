@@ -24,7 +24,8 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
+# ⚠️🚧 THIS IS STILL UNDER ACTIVE DEVELOPMENT 🚧⚠️
+### Although we have tested the current features internally and can attest to all functionalities that are present, there might be a few bugs so please keep that in mind when deploying on your infrastructure
 
 <!-- PROJECT LOGO -->
 <br />
@@ -154,9 +155,12 @@ To get started, you need to install python3, from [here](Python.url)
             interval: 1000
 
         restricted_resources: # WIP
-            network: 192.168.*.* # Define the bounds of your network
-            internal: 192.168.3.* # Define protected resources that even internal computers can't access
-            external: "!192.168.4.2" # Define protected resources that external computers can't access
+            "192.168.*.*": # Define the bounds a your network
+                disallow: # Disallow the following packet types
+                    - NBT Datagram Packet
+            "!192.168.4.2": # Match by specific resource
+                disallow:
+                    - SSHv2 # No device is allowed to use SSHv2 except this IP
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -183,6 +187,9 @@ sudo python3 index.py
 - [x] Detect access to restricted resources
 - [x] Detect spike in network traffic
 - [x] Basic example config file
+- [ ] Port based filters
+- [ ] Management web portal
+- [ ] Notifications via email
 - [ ] Isolation of suspicious IP addresses from the network 
 - [ ] Booting out suspicious ip out of the network.
 - [ ] Implementation of the IDS on the event manager making it easy for admins to carryout possible investigation

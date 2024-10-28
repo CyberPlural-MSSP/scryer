@@ -1,7 +1,8 @@
 import warnings
 warnings.simplefilter("ignore", category=DeprecationWarning)
 import scapy.config
-from scapy.all import ICMP, UDP, TCP, IP, sniff
+from scapy.all import ICMP, UDP, TCP, IP, sniff, conf
+conf.use_pcap = True
 import time
 from yaspin import yaspin
 import os
@@ -213,13 +214,14 @@ def main():
             registered_timers.append(t)
         
         print_banner()
+        
         if not is_windows:
             with yaspin(text=TimedText()):
-                sniff(iface=conf.get('interface', conf['interface']), prn=sniffer)
+                sniff(iface=conf.get('interface', conf['interface']), prn=sniffer, monitor=True)
         else:
             t = Thread(target=windows_loader)
             t.start()
-            sniff(iface=conf.get('interface', conf['interface']), prn=sniffer)
+            sniff(iface=conf.get('interface', conf['interface']), prn=sniffer, monitor=True)
             is_windows_loader = False
         print("DONE")
         for t in registered_timers:
